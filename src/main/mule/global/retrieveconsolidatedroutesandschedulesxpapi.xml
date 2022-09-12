@@ -55,7 +55,7 @@ attributes.queryParams.'destinationLocation']]></ee:set-variable>
     <flow name="get:\booking\(transportType)\schedules:retrieveconsolidatedroutesandschedulesxpapi-config">
 		<flow-ref doc:name="Flow Reference" doc:id="0a9db4e8-7050-4e60-9dee-e7dfca9152d1" name="retrieveconsolidatedroutesandschedulesxpapiSub_Flow"/>
 		<logger level="INFO" doc:name="Logger" doc:id="9a42219f-640e-483c-8e3f-571f2847bbc6" message="Request Received for Schedules BAPI for TransactionId: #[vars.transactionId]"/>
-		<flow-ref doc:name="Flow Reference" doc:id="a81552d0-f1c7-419a-9b99-22b7e7268edd" name="getSchedules-implementationSub_Flow"/>
+		<flow-ref doc:name="Flow Reference" doc:id="a81552d0-f1c7-419a-9b99-22b7e7268edd" name="getSchedules-implementation_Sub_Flow"/>
 		<logger level="INFO" doc:name="Logger" doc:id="8072aa4a-a77b-4776-9116-a49380e14080" message="Response sent for Schedules BAPI for TransactionId: #[vars.transactionId]"/>
     </flow>
 </mule>

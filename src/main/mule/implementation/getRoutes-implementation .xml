@@ -19,21 +19,23 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
+var LocationMapping = (readUrl("classpath://json/LocationCodeMapping.json","application/json"))
 ---
-payload map(value,index)->{
+payload map(value,index)->(
+	{
     "companyCode": vars.transportCompany,
     "originLocation": {
-      "locationCode": value.departureLocationCode,
-      "locationDesc": "Beauna Vista Singapore"
+      "locationCode": value.originLocation.locationCode,
+      "locationDesc": (LocationMapping filter($.locationCode == value.originLocation.locationCode))[0].locationDesc
     },
     "destinationLocation": {
-      "locationCode": value.arrivalLocationCode,
-      "locationDesc": "Klang Malaysia"
+      "locationCode": value.destinationLocation.locationCode,
+      "locationDesc": (LocationMapping filter($.locationCode == value.destinationLocation.locationCode))[0].locationDesc
     }
-  }]]></ee:set-payload>
+	}
+  )]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-					<logger level="INFO" doc:name="Logger" doc:id="adfae5fd-7595-4cfb-a7a5-328e9c4d675f" message="Logger inside cache" />
 				</ee:cache>
 	</sub-flow>
 	<sub-flow name="getRoutes-callFastGo-subFlow" doc:id="0a6bbacf-31aa-437e-ad5b-0f94c123b1fc" >
@@ -50,25 +52,26 @@ payload map(value,index)->{
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
+var LocationMapping = (readUrl("classpath://json/LocationCodeMapping.json","application/json"))
 ---
 payload map(value,index)->{
     "companyCode": vars.transportCompany,
     "originLocation": {
       "locationCode": value.departureLocationCode,
-      "locationDesc": "Beauna Vista Singapore"
+      "locationDesc": (LocationMapping filter($.locationCode == value.departureLocationCode))[0].locationDesc
     },
     "destinationLocation": {
       "locationCode": value.arrivalLocationCode,
-      "locationDesc": "Klang Malaysia"
+      "locationDesc": (LocationMapping filter($.locationCode == value.arrivalLocationCode))[0].locationDesc
     }
   }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-					<logger level="INFO" doc:name="Logger" doc:id="d967dfac-3a72-4f49-bb21-81dbae180563" message="Logger inside cache" />
 				</ee:cache>
 	</sub-flow>
 	<sub-flow name="getRoutes-implementation_Sub_Flow" doc:id="a17d23b5-abc6-4b87-96cf-f426b8597b9e" >
 	
+		<set-variable value="Routes" doc:name="Set Variable" doc:id="0abcc3e4-f872-4dc1-953d-e8b5ed298e06" variableName="resource"/>
 		<choice doc:name="Choice" doc:id="98bd27f2-d432-4dc3-a6f7-e256deb9b225" >
 			<when expression='#[vars.transportCompany == "FastGo"]'>
 				<flow-ref doc:name="Flow Reference" doc:id="1cae5a6c-c92a-406b-82ec-4a607b99e2dd" name="getRoutes-callFastGo-subFlow" />
