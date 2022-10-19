@@ -7,15 +7,14 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="getRoutes-callTravelOnTip-subFlow" doc:id="33471759-1708-4725-826a-52a51d038ef4" >
 		<set-variable value="#[&quot;/api/&quot; ++  (vars.transportType default &quot;&quot;) ++ p('http.requester.travelOnTip.routesPath')]" doc:name="Set Variable" doc:id="5a8daf32-9949-4245-a9c7-1c33902a2c8a" variableName="resourcePath" />
-		<ee:cache doc:name="Cache" doc:id="2d48b0f6-13ef-49c6-8c65-a220834ef07d" cachingStrategy-ref="Caching_Strategy">
-					<http:request method="GET" doc:name="Request" doc:id="91fc5aa6-ac22-472e-bcb8-6aa26d717a26" config-ref="HTTP_Request_configuration-TravelOnTip-SAPI" path="#[vars.resourcePath]">
+		<http:request method="GET" doc:name="Request" doc:id="91fc5aa6-ac22-472e-bcb8-6aa26d717a26" config-ref="HTTP_Request_configuration-TravelOnTip-SAPI" path="#[vars.resourcePath]">
 					<http:headers><![CDATA[#[output application/java
 ---
 {
 	"transactionId" : vars.transactionId
 }]]]></http:headers>
 				</http:request>
-					<ee:transform doc:name="Transform Message" doc:id="3a22500e-1dfc-4416-9032-444152e4cbc5">
+		<ee:transform doc:name="Transform Message" doc:id="3a22500e-1dfc-4416-9032-444152e4cbc5">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -36,19 +35,17 @@ payload map(value,index)->(
   )]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				</ee:cache>
 	</sub-flow>
 	<sub-flow name="getRoutes-callFastGo-subFlow" doc:id="0a6bbacf-31aa-437e-ad5b-0f94c123b1fc" >
 		<set-variable value="#[&quot;/api/&quot; ++  (vars.transportType default &quot;&quot;) ++ p('http.requester.fastGo.routesPath')]" doc:name="Set Variable" doc:id="75f456be-bc43-4829-ab47-28ab46028906" variableName="resourcePath" />
-		<ee:cache doc:name="Cache" doc:id="9d0f5a6d-dc2c-4d16-bdc9-84e8ba45c0c6" cachingStrategy-ref="Caching_Strategy">
-					<http:request method="GET" doc:name="Request" doc:id="498713df-4365-428a-a4ed-f90924753a77" config-ref="HTTP_Request_configuration-FastGo-SAPI" path="#[vars.resourcePath]">
+		<http:request method="GET" doc:name="Request" doc:id="498713df-4365-428a-a4ed-f90924753a77" config-ref="HTTP_Request_configuration-FastGo-SAPI" path="#[vars.resourcePath]">
 					<http:headers><![CDATA[#[output application/java
 ---
 {
 	"transactionId" : vars.transactionId
 }]]]></http:headers>
 				</http:request>
-					<ee:transform doc:name="Transform Message" doc:id="4f40eedc-8dec-4fcd-a546-cd961c831c35">
+		<ee:transform doc:name="Transform Message" doc:id="4f40eedc-8dec-4fcd-a546-cd961c831c35">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -67,7 +64,6 @@ payload map(value,index)->{
   }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				</ee:cache>
 	</sub-flow>
 	<sub-flow name="getRoutes-implementation_Sub_Flow" doc:id="a17d23b5-abc6-4b87-96cf-f426b8597b9e" >
 	

@@ -7,15 +7,14 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="getSchedules-callTravelOnTip-subFlow" doc:id="e3f7f684-4b43-439e-a540-0eefa15fd08a" >
 		<set-variable value="#[&quot;/api/&quot; ++  (vars.transportType default &quot;&quot;) ++ p('http.requester.travelOnTip.schedulesPath')]" doc:name="Set Variable" doc:id="a2780180-bb85-4172-bf54-db875a402792" variableName="resourcePath" />
-		<ee:cache doc:name="Cache" doc:id="4c1b62f5-af12-4093-a492-a0e9c6987096" cachingStrategy-ref="Caching_Strategy">
-					<http:request method="GET" doc:name="Request" doc:id="72737344-47f9-427e-8065-dba54cce2542" config-ref="HTTP_Request_configuration-TravelOnTip-SAPI" path="#[vars.resourcePath]">
+		<http:request method="GET" doc:name="Request" doc:id="72737344-47f9-427e-8065-dba54cce2542" config-ref="HTTP_Request_configuration-TravelOnTip-SAPI" path="#[vars.resourcePath]">
 					<http:headers><![CDATA[#[output application/java
 ---
 {
 	"transactionId" : vars.transactionId
 }]]]></http:headers>
 				</http:request>
-					<ee:transform doc:name="Transform Message" doc:id="f40c9509-2822-410e-857d-0d07aaa4ac83">
+		<ee:transform doc:name="Transform Message" doc:id="f40c9509-2822-410e-857d-0d07aaa4ac83">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -38,19 +37,17 @@ payload map(value,index)->(
   )]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				</ee:cache>
 	</sub-flow>
 	<sub-flow name="getSchedules-callFastGo-subFlow" doc:id="217b2fde-df21-4b4a-a877-2e8902c13e59" >
 		<set-variable value="#[&quot;/api/&quot; ++  (vars.transportType default &quot;&quot;) ++ p('http.requester.fastGo.schedulesPath')]" doc:name="Set Variable" doc:id="7d29e687-8fc6-4673-969f-c8590a9c3652" variableName="resourcePath" />
-		<ee:cache doc:name="Cache" doc:id="75310c1c-5338-427f-909f-eaceb3058c9c" cachingStrategy-ref="Caching_Strategy">
-					<http:request method="GET" doc:name="Request" doc:id="0e89fdf8-0dc5-4278-abe1-26141ee222a0" config-ref="HTTP_Request_configuration-FastGo-SAPI" path="#[vars.resourcePath]">
+		<http:request method="GET" doc:name="Request" doc:id="0e89fdf8-0dc5-4278-abe1-26141ee222a0" config-ref="HTTP_Request_configuration-FastGo-SAPI" path="#[vars.resourcePath]">
 					<http:headers><![CDATA[#[output application/java
 ---
 {
 	"transactionId" : vars.transactionId
 }]]]></http:headers>
 				</http:request>
-					<ee:transform doc:name="Transform Message" doc:id="a47e55fa-eda1-4686-b613-2f6bed8f8325">
+		<ee:transform doc:name="Transform Message" doc:id="a47e55fa-eda1-4686-b613-2f6bed8f8325">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -73,7 +70,6 @@ payload map(value,index)->(
 )]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				</ee:cache>
 	</sub-flow>
 	<sub-flow name="getSchedules-implementation_Sub_Flow" doc:id="12269777-83fc-4b3b-ac2f-0f721ea0d303" >
 	
